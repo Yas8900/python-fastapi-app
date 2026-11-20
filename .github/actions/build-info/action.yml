@@ -1,23 +1,12 @@
-name: Build Info
-description: Print build details and return a build id
+name: Docker Hello
+description: Say hello from a Docker container
 inputs:
-  app-name:
-    description: Application name
+  who:
+    description: Who to greet
     required: true
-  version:
-    description: Application version
-    default: "1.0.0"
-outputs:
-  build-id:
-    description: Generated build identifier
-    value: ${{ steps.make-id.outputs.build-id }}
+    default: "World"
 runs:
-  using: composite
-  steps:
-    - name: Print build details
-      shell: bash
-      run: echo "Building ${{ inputs.app-name }} v${{ inputs.version }}"
-    - name: Generate build id
-      id: make-id
-      shell: bash
-      run: echo "build-id=${{ inputs.app-name }}-${{ inputs.version }}" >> $GITHUB_OUTPUT
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.who }}
